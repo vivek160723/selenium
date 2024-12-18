@@ -1,0 +1,19 @@
+####Customized Locators:###
+
+1.css locators: Generally we dont use css selector
+-Tag and id:use (#) in between
+-Tag and class:use (.) in between
+-Tag and Attribute: use ([]) and (=) in between
+-Tag,class and Attribute
+
+2.Xpath: is is basically the address of the element/it ia defined as XML path(//tagname[@attribute='value'])
+-two types absolute(full xpath) and relative=//input[name="e-mail]
+- it is used to find the position of any element through html dome structure
+? Difference between absolute and relative XPATH
+we use prefer to relative xpath  bcz change in the positi on of the element the relative path remain same
+##DOM-document object model###
+
+
+
+
+
