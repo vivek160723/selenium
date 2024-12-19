@@ -10,8 +10,29 @@
 -two types absolute(full xpath) and relative=//input[name="e-mail]
 - it is used to find the position of any element through html dome structure
 ? Difference between absolute and relative XPATH
-we use prefer to relative xpath  bcz change in the positi on of the element the relative path remain same
+we use prefer to relative xpath  bcz change in the position of the element the relative path remain same
 ##DOM-document object model###
+
+
+3.XPATH--AND , OR(used when the element values are dynamic)---19/12/24
+
+4.XPATH-- with Text()----driver.find_Element(By.XPATH,"m")
+5.XPATH---with contains()----driver.find_Element(By.XPATH,"//a[contains(text()'pricing')]")
+                         ----driver.find_Element(By.XPATH,"//a[contains(@id,'pricing')]")
+6.XPATH---with starts-with()----driver.find_Element(By.XPATH,"//a[starts-with(text(),'pricing')]")
+                            ----driver.find_Element(By.XPATH,"//a[starts-with(@name,'value')]")
+
+
+###----XPATH axes-----### 19/12/24
+
+XPath axes are used to navigate through elements and attributes in
+an XML document relative to the current node.
+They provide a way to select nodes based on
+their relationship to other nodes in the document tree.
+
+
+
+
 
 
 

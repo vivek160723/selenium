@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 # Initialize the WebDriver
-driver = webdriver.Chrome()
+driver = webdriver.Safari()
 
 # Step 1: Open Gmail
 driver.get("https://mail.google.com")
