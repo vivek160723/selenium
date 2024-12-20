@@ -30,6 +30,13 @@ an XML document relative to the current node.
 They provide a way to select nodes based on
 their relationship to other nodes in the document tree.
 
+###-----Relative  locators-----####--20 dec 2024
+Near
+Above/below
+ToLeftOf/ToRightOf
+WithtagName
+Near and WITHTAGName
+
 
 
 
