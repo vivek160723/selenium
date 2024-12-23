@@ -37,10 +37,49 @@ ToLeftOf/ToRightOf
 WithtagName
 Near and WITHTAGName
 
+############################### Driver commands ############################ 23-dec-2024
 
+1.Application commands:---applicable on driver only
 
+These commands are used to interact with the browser through the WebDriver.
+	•	get(url):
+Loads the specified URL in the browser.
+Purpose: Navigate to a web page.
+	•	getTitle():
+Returns the title of the current web page as a string.
+Purpose: Verify the title of the page.
+	•	getCurrentUrl():
+Returns the current URL of the web page as a string.
+Purpose: Ensure the correct page is loaded.
+	•	getPageSource():
+Fetches the HTML source code of the current page.
+Purpose: Verify the structure or content of the page source.
 
+2.Conditional Commands:---
 
+These commands are used to verify the properties or states of web elements.
+	•	isDisplayed():
+Checks whether a web element is visible on the webpage.
+Purpose: Validate if an element (e.g., button, image) is shown to the user.
+	•	isEnabled():
+Verifies if a web element is enabled for interaction.
+Purpose: Ensure that buttons or input fields are active.
+	•	isSelected():
+Confirms if a web element, such as a checkbox or radio button, is selected.
+Purpose: Verify user selections or default settings.
+
+3.Browser commands---
+
+>close()
+>quit()
+
+4.Navigational commands---
+
+>back()
+>forward()
+>refresh()
+
+Difference between find_element and find_elements
 
 
 
