@@ -328,6 +328,80 @@ Best Practices
 #######################-------Mouse/keyboard Event--------########################## 2jan25
 
 
+######################----file Download -------########################################### 6 jan 2025
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+import os
+
+# Set up Chrome options
+download_dir = os.path.join(os.getcwd(), "downloads")  # Directory for downloaded files
+if not os.path.exists(download_dir):
+    os.makedirs(download_dir)
+
+chrome_options = Options()
+chrome_prefs = {
+    "download.default_directory": download_dir,  # Set download directory
+    "download.prompt_for_download": False,  # Disable download prompt
+    "download.directory_upgrade": True,  # Upgrade directory if needed
+    "plugins.always_open_pdf_externally": True,  # For PDF files to open externally
+    "profile.default_content_settings.popups": 0  # Disable popups
+}
+chrome_options.add_experimental_option("prefs", chrome_prefs)
+
+# Set up the WebDriver
+driver_path = "<path_to_chromedriver>"  # Replace with the path to your ChromeDriver
+service = Service(driver_path)
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+try:
+    # Example usage
+    driver.get("https://www.example.com")  # Replace with your target URL
+
+    # Find and click the download link/button (update the locator as needed)
+    download_button = driver.find_element(By.XPATH, "//a[@href='file_to_download.pdf']")
+    download_button.click()
+
+    print(f"File will be downloaded to: {download_dir}")
+finally:
+    # Clean up
+    driver.quit()
+
+######################----Data driven testing------########################################### 6 jan 2025
 
 
+Data-driven testing (DDT) is a software testing methodology where test data is separated from the test script. The test script runs the same set of operations with different sets of input data. The goal is to verify that the system behaves as expected across a variety of data inputs.
 
+Here’s how it works:
+	1.	Test Data Separation: Test data is stored separately, often in external sources like Excel files, CSV files, databases, or APIs.
+	2.	Test Scripts: The test scripts are written to run multiple times with different sets of input data. The logic of the test remains the same, but the inputs vary.
+	3.	Data Providers: The data for testing is provided through various data providers (files, databases, or programmatically generated) to test the application under different conditions.
+	4.	Test Execution: The test cases are executed automatically, and the results are logged. Each set of input data can trigger a new test iteration.
+	5.	Test Automation: This technique is commonly used with test automation frameworks like Selenium, JUnit, or TestNG, where tests are automated to run with different input data sets.
+
+Example:
+
+Suppose you’re testing a login form. You want to check how the system handles different usernames and passwords.
+	1.	Test Data (Excel/CSV):
+
+Username	Password	Expected Outcome
+user1	pass1	Login Success
+user2	wrongpass	Login Failure
+user3	pass3	Login Success
+
+
+	2.	Test Script:
+The script loops through each set of test data (username and password), inputs it into the login form, and compares the outcome with the expected result.
+
+Advantages:
+	•	Reusability: Test scripts are reusable with different data sets.
+	•	Efficiency: You can test multiple scenarios with minimal changes to the test script.
+	•	Consistency: Ensures that the system performs well across different data combinations.
+
+Tools for Data-Driven Testing:
+	•	JUnit / TestNG: Both support parameterized tests and can load data from external sources.
+	•	Selenium: Combined with frameworks like TestNG or JUnit, Selenium supports data-driven testing by running the same test with multiple data inputs.
+
+This method helps in testing applications with various combinations of data without the need to write individual test cases for each combination.
