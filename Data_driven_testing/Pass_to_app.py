@@ -1,105 +1,62 @@
 import time
 import openpyxl
-from openpyxl.styles import PatternFill
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
 
-# Define Excel functions
-def getRowCount(file, sheetName):
-    workbook = openpyxl.load_workbook(file)
-    sheet = workbook[sheetName]
-    return sheet.max_row
-
-def getColumnCount(file, sheetName):
-    workbook = openpyxl.load_workbook(file)
-    sheet = workbook[sheetName]
-    return sheet.max_column
-
-def readData(file, sheetName, rownum, columnno):
-    workbook = openpyxl.load_workbook(file)
-    sheet = workbook[sheetName]
-    return sheet.cell(rownum, columnno).value
-
-def writeData(file, sheetName, rownum, columnno, data):
-    workbook = openpyxl.load_workbook(file)
-    sheet = workbook[sheetName]
-    sheet.cell(rownum, columnno).value = data
-    workbook.save(file)
-
-def fillGreenColor(file, sheetName, rownum, columnno):
-    workbook = openpyxl.load_workbook(file)
-    sheet = workbook[sheetName]
-    greenFill = PatternFill(start_color='60b212',
-                            end_color='60b212',
-                            fill_type='solid')
-
-    sheet.cell(rownum, columnno).fill = greenFill
-    workbook.save(file)
-
-def fillRedColor(file, sheetName, rownum, columnno):
-    workbook = openpyxl.load_workbook(file)
-    sheet = workbook[sheetName]
-    redFill = PatternFill(start_color='ff0000',
-                          end_color='ff0000',
-                          fill_type='solid')
-    sheet.cell(rownum, columnno).fill = redFill
-    workbook.save(file)
-
-# Excel File and Sheet Details
 file = '/Users/vivekkumar/Downloads/simple_interest_data.xlsx'
-sheetName = 'Sheet1'
+workbook = openpyxl.load_workbook(file)
+sheet = workbook.active
 
-# Read values from the Excel file
-deposit_amount = readData(file, sheetName, 2, 1)
-tenure = readData(file, sheetName, 2, 2)
-interest_rate = readData(file, sheetName, 2, 3)
-
-# Set up Chrome options and driver
 chrome_options = Options()
 driver = webdriver.Chrome(options=chrome_options)
-driver.get("https://www.moneycontrol.com/fixed-income/calculator/state-bank-of-india-sbi/fixed-deposit-calculator-SBI-BSB001.html")
+driver.get(
+    "https://www.moneycontrol.com/fixed-income/calculator/state-bank-of-india-sbi/fixed-deposit-calculator-SBI-BSB001.html")
 
-# Wait for the form elements to be visible
-wait = WebDriverWait(driver, 20)
-deposit_field = wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='principal']")))
-deposit_field.clear()
-deposit_field.send_keys(str(deposit_amount))
+wait = WebDriverWait(driver, 10)
 
-rate_field = driver.find_element(By.ID, "interest")
-rate_field.clear()
-rate_field.send_keys(str(interest_rate))
+for row in range(2, sheet.max_row + 1):
+    deposit_amount = sheet.cell(row, 1).value
+    interest_rate = sheet.cell(row, 2).value
+    tenure_value = sheet.cell(row, 3).value
+    tenure_type = sheet.cell(row, 4).value.lower()  # Assuming the 4th column specifies 'year(s)', 'month(s)', 'day(s)'
+    frequency = sheet.cell(row, 5).value  # Assuming the 5th column specifies the frequency
 
-tenure_field = driver.find_element(By.ID, "tenure")
-tenure_field.clear()
-tenure_field.send_keys(str(tenure))
+    deposit_field = wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='principal']")))
+    deposit_field.clear()
+    deposit_field.send_keys(str(deposit_amount))
 
-# Wait for the overlay to become invisible
-try:
-    overlay = wait.until(EC.invisibility_of_element_located((By.CLASS_NAME, "wzrk-overlay")))
-except:
-    print("Overlay did not disappear in time, proceeding...")
+    time.sleep(2)
+    rate_field = driver.find_element(By.ID, "interest")
+    rate_field.clear()
+    rate_field.send_keys(str(interest_rate))
 
-# Find the calculate button and click it
-calculate_button = driver.find_element(By.XPATH, "//*[@id='fdMatVal']/div[2]/a[1]/img")
-action = ActionChains(driver)
-action.move_to_element(calculate_button).click().perform()
+    time.sleep(2)
+    tenure_field = driver.find_element(By.ID, "tenure")
+    tenure_field.clear()
+    tenure_field.send_keys(str(tenure_value))
 
-# Wait for the maturity amount field to be visible
-wait.until(EC.visibility_of_element_located((By.ID, "maturityAmt")))
+    # Handle the dropdowns for day, month, and year
+    tenure_type_dropdown = Select(driver.find_element(By.ID, "tenurePeriod"))
+    if "year" in tenure_type:
+        tenure_type_dropdown.select_by_visible_text("year(s)")
+    elif "month" in tenure_type:
+        tenure_type_dropdown.select_by_visible_text("month(s)")
+    elif "day" in tenure_type:
+        tenure_type_dropdown.select_by_visible_text("day(s)")
 
-# Retrieve and store the result
-result = driver.find_element(By.ID, "maturityAmt").text
-writeData(file, sheetName, 2, 4, result)
+    time.sleep(2)
+    # Handle the frequency dropdown
+    frequency_dropdown = Select(driver.find_element(By.ID, "frequency"))
+    frequency_dropdown.select_by_visible_text(frequency)
 
-# Apply color based on result (Example: If result is high, fill green, else red)
-if float(result) > 50000:  # Adjust your condition
-    fillGreenColor(file, sheetName, 2, 4)
-else:
-    fillRedColor(file, sheetName, 2, 4)
+    time.sleep(2)
+    calculate_button = driver.find_element(By.XPATH, "//*[@id='fdMatVal']/div[2]/a[1]/img")
+    calculate_button.click()
 
-# Close the browser
+    time.sleep(3)
+
 driver.quit()

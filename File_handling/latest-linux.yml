@@ -1,0 +1,9 @@
+version: 4.0.1-beta.14
+files:
+  - url: Selenium-IDE-4.0.1-beta.14.AppImage
+    sha512: TQQApGqAEisM25yPvgjSlvRot+8n0g+0UFatBlpDUXqPzEVhSQaYIhNrrwV22uI2ljkm6OJfbpHUlLJ2eGDa9Q==
+    size: 290589313
+    blockMapSize: 301717
+path: Selenium-IDE-4.0.1-beta.14.AppImage
+sha512: TQQApGqAEisM25yPvgjSlvRot+8n0g+0UFatBlpDUXqPzEVhSQaYIhNrrwV22uI2ljkm6OJfbpHUlLJ2eGDa9Q==
+releaseDate: '2024-07-16T03:07:43.825Z'
